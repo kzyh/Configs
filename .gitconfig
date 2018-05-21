@@ -1,0 +1,78 @@
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[user]
+	name = khong97
+	email = kevin.zy.hong@gmail.com
+	signingkey = 42A754C13C6AC293
+[core]
+	editor = vim
+[branch]
+    autosetuprebase = always
+[push]
+    default = tracking
+[merge]
+	tool = p4mergetool
+#[diff]
+#    external = p4diff
+#	tool = p4mergetool
+[alias]
+    a = !sh -c 'cat ~/.gitconfig | more'
+    b  = branch
+    ba = branch -a
+    br = !sh -c 'git branch -vv | sed "s/].*/]/"' -
+    cam = !sh -c 'git commit -Sam $1' -
+    commit = !sh -c 'git commit -Sm $1' -
+    cb = checkout -b
+    cd = !sh -c 'git checkout develop && git pull'
+    cm = !sh -c 'git checkout master && git pull'
+    cn = !sh -c 'git checkout DATA-$1' -
+    co = checkout
+    cp = cherry-pick
+    d = diff -w
+    db = !sh -c 'git branch -D $1 && git push origin :$1' -
+    dc = diff -w --cached
+    df = !sh -c 'git d $1^! -- $2' -
+    dl = diff --no-ext-diff
+    ds = diff -w --stat=,80
+    dsc = diff -w --stat=,80 --cached
+    dsf = !sh -c 'git ds $1^!' -
+    dr = !sh -c 'git d `cat .git/rebase-merge/stopped-sha`^! -- $1' -
+    h = help
+    fukt = !sh -c 'git add . && git commit -m \"$(curl -s whatthecommit.com/index.txt)\" && git push -f'
+    l = log --pretty=format:'%C(red)%h%Creset - %C(yellow)%s %Creset%C(green)(%an) %Creset%C(cyan)%ar%Creset' --no-merges
+    la = log -6 --pretty=format:'%C(red)%h%Creset - %C(yellow)%s %Creset%C(green)(%an) %Creset%C(cyan)%ar%Creset'
+    lc = log -1 --pretty=format:'%C(red)%h%Creset - %C(yellow)%s %Creset%C(green)(%an) %Creset%C(cyan)%ar%Creset'
+    lg = log --graph --pretty=format:'%C(red)%h%Creset - %C(yellow)%s %Creset%C(green)(%an) %Creset%C(cyan)%ar%Creset'
+    lga = log --graph -10 --pretty=format:'%C(red)%h%Creset - %C(yellow)%s %Creset%C(green)(%an) %Creset%C(cyan)%ar%Creset'
+    lgfp = log --graph --first-parent --pretty=format:'%C(red)%h%Creset - %C(yellow)%s %Creset%C(green)(%an) %Creset%C(cyan)%ar%Creset'
+    lm = log --pretty=format:'%C(red)%h%Creset - %C(yellow)%s' --no-merges
+    lr = log --pretty=format:'%C(red)%h%Creset - %C(yellow)%s %Creset%C(green)(%an) %Creset%C(cyan)%ar%Creset' --reverse
+    ls = log --stat=,80 --pretty=format:'%C(red)%h%Creset - %C(yellow)%s %Creset%C(green)(%an) %Creset%C(cyan)%ar%Creset' --no-merges
+    nd = !sh -c 'git ds $1@{1}..$1@{0} \"$@\"' -
+    new = !sh -c 'git ls $1@{1}..$1@{0} \"$@\"' -
+    out = push
+    poh = !sh -c 'git push origin head'
+    pf = push -f
+    pr = remote prune origin
+    puo = push -u origin
+    rc = !sh -c 'git add . && git rebase --continue' -
+    rim = rebase -i master
+    rmd = !sh -c 'git rm $(git ls-files --deleted)' -
+    so = remote show origin
+    st = status -sb
+    up = !sh -c 'git fetch && git rebase -p && git new' -
+    start-feature = flow feature start
+    finish-feature = flow feature finish -rF
+[gpg]
+	program = gpg
+[commit]
+	gpgsign = true
+[mergetool "p4mergetool"]
+	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
+	trustExitCode = false
+[mergetool]
+	keepBackup = false
+[difftool "p4mergetool"]
+	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $LOCAL $REMOTE
